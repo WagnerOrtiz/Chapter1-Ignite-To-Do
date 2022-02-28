@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { useState } from 'react';
+import { FiCheckSquare, FiTrash } from 'react-icons/fi';
+import '../styles/tasklist.scss';
 
-import '../styles/tasklist.scss'
 
-import { FiTrash, FiCheckSquare } from 'react-icons/fi'
 
 interface Task {
   id: number;
@@ -15,16 +15,33 @@ export function TaskList() {
   const [newTaskTitle, setNewTaskTitle] = useState('');
 
   function handleCreateNewTask() {
-    // Crie uma nova task com um id random, não permita criar caso o título seja vazio.
+    const newTask = {
+      id: Math.random(),                                                // random ID
+      title: newTaskTitle,
+      isComplete: false,
+    }
+
+    newTaskTitle !== '' && (setTasks(prevState => [...prevState, newTask]))   // confirm task title is not null
+    setNewTaskTitle('')
   }
 
-  function handleToggleTaskCompletion(id: number) {
-    // Altere entre `true` ou `false` o campo `isComplete` de uma task com dado ID
+
+  function handleToggleTaskCompletion(IDofClickedTask: number) {
+    const newTasks = tasks.map(task => task.id === IDofClickedTask ? {
+      ...task, 
+      isComplete: !task.isComplete,
+    } :
+      task
+    )
+    setTasks(newTasks)
   }
 
-  function handleRemoveTask(id: number) {
-    // Remova uma task da listagem pelo ID
+
+  function handleRemoveTask(IDofClickedTask: number) {
+    const filteredTasks = tasks.filter(task => task.id !== IDofClickedTask)
+    setTasks(filteredTasks)
   }
+
 
   return (
     <section className="task-list container">
@@ -71,4 +88,8 @@ export function TaskList() {
       </main>
     </section>
   )
+}
+
+function title(title: any) {
+  throw new Error('Function not implemented.');
 }
